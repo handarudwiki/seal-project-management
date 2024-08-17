@@ -101,15 +101,20 @@ export const getuserById = async(id)=>{
 }
 
 export const update = async (req) => {
-    let user = validate(updateUserValidation, req.body);
+    const dto = validate(updateUserValidation, req.body);
 
-    if (user.password) {
-        user.password = await bcrypt.hash(user.password, 10);
+    if (dto.password) {
+        dto.password = await bcrypt.hash(dto.password, 10);
     }
-    if (user.email) {
+    const user = await prisma.user.findUnique({
+        where:{
+            id:req.user.id
+        }
+    })
+    if (dto.email !== user.email) {
         const emailExist = await prisma.user.findUnique({
             where: {
-                email: user.email,
+                email: dto.email,
             },
         });
 
@@ -118,11 +123,6 @@ export const update = async (req) => {
         }
     }
 
-     user = await prisma.user.findUnique({
-        where:{
-            id:req.user.id
-        }
-    })
 
     if (req.files) {
         const file = req.files.avatar;
@@ -135,7 +135,8 @@ export const update = async (req) => {
         }
 
         if (req.user.avatar) {
-            const oldFilePath = `./public/images/${user.avatar}`;
+            const image = req.user.avatar.split('/').pop()
+            const oldFilePath = `./public/images/${image}`;
             if (fs.existsSync(oldFilePath)) {
                 fs.unlinkSync(oldFilePath);
             }
@@ -152,14 +153,14 @@ export const update = async (req) => {
         });
 
         const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-        user.avatar = url;
+        dto.avatar = url;
     }
 
     const updatedUser = await prisma.user.update({
         where: {
             id: req.user.id,
         },
-        data: user,
+        data: dto,
     });
 
     return {
@@ -176,7 +177,8 @@ export const destroy = async (id) => {
             id
         }
     })
-    const filepath = `./public/images/${user.avatar}`;
+    const fileName = user.avatar.split('/').pop();
+    const filepath = `./public/images/${fileName}`;
         fs.unlinkSync(filepath);
     await prisma.user.delete({
         where: {

@@ -78,7 +78,7 @@ export const deleteUserController = async (req, res, next)=>{
             data : "User deleted successfully"
         })
     } catch (error) {
-        
+        console.log(error.message)
         next(error)
     }
 }
