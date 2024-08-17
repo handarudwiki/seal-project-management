@@ -177,9 +177,6 @@ export const destroy = async (id) => {
             id
         }
     })
-    const fileName = user.avatar.split('/').pop();
-    const filepath = `./public/images/${fileName}`;
-        fs.unlinkSync(filepath);
     await prisma.user.delete({
         where: {
             id: id

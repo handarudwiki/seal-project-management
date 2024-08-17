@@ -166,7 +166,7 @@ describe("GET /api/tasks", function () {
     await removeTestUser()
 })
 
-  it("should can get all project", async () => {
+  it("should can get all task", async () => {
     const result = await supertest(app).get("/api/tasks").set('Cookie', authCookie);
 
     expect(result.status).toBe(200);
@@ -276,7 +276,7 @@ describe("PUT /api/tasks/:id", function () {
     expect(result.status).toBe(400);
   });
 });
-describe("DELETE /api/projects/:id", function () {
+describe("DELETE /api/tasks/:id", function () {
   let authCookie;
 
   beforeEach(async () => {
@@ -317,7 +317,7 @@ describe("DELETE /api/projects/:id", function () {
     expect(result.status).toBe(401);
     expect(result.body.status).toBe("error");
   });
-  it("should return 404 if project not found", async () => {
+  it("should return 404 if task not found", async () => {
     const task = await getTestTask();
     const result = await supertest(app)
       .delete(`/api/tasks/${task.id + 1}`)

@@ -61,12 +61,28 @@ export const getById = async (id, userId) => {
 export const update = async (req, id) => {
   const task = validate(createTaskValidation, req);
 
+
   const taskCount = await prisma.task.count({
     where: { id },
   });
 
   if (taskCount !== 1) {
     throw new ResponseError("Task not found", 404);
+  }
+
+  const isProjectExist = await prisma.project.findUnique({
+    where:{id:task.project_id}
+  })
+
+  if(!isProjectExist){
+    throw new ResponseError("Project not found", 404)
+  }
+  const isUserExist = await prisma.user.findUnique({
+    where:{id:task.user_id}
+  })
+
+  if(!isUserExist){
+    throw new ResponseError("User not found", 404)
   }
 
   const updatedTask = await prisma.task.update({

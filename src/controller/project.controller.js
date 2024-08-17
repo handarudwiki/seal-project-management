@@ -2,7 +2,7 @@ import { create, destroy, getAll, getById, update } from "../service/project.ser
 
 export const createProjectControler = async (req, res, next) => {
     try {
-        const project = await create(req)
+        const project = await create(req.body)
         return res.status(200).json({
             status: "success",
             data: project
@@ -61,6 +61,7 @@ export const deleteProjectController = async (req, res, next) => {
             message: "project deleted successfully"
         })
     } catch (error) {
+        console.log(error.message)
         next(error)
     }
 }

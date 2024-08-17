@@ -46,11 +46,6 @@ export const getuserByIdController = async (req, res, next)=>{
             data : user
         })
     } catch (error) {
-        return res.status(500).json({
-            status : "error",
-            message : error.message
-        })
-        console.log(error.message)
         next(error)
     }
 }

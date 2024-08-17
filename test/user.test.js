@@ -250,7 +250,7 @@ describe('DELETE /api/users', function(){
 
     it("should can delete user", async()=>{
         const result = await supertest(app)
-                        .put("/api/users")
+                        .delete("/api/users")
                         .set('Cookie', authCookie)
                         
         expect(result.status).toBe(200)
@@ -258,11 +258,7 @@ describe('DELETE /api/users', function(){
     })
     it("should reject if don't have token", async()=>{
         const result = await supertest(app)
-                        .put("/api/users")
-                        .send({
-                            'email' : 'testupdate@gmail.com',
-                            'name' : "test update"
-                        })
+                        .delete("/api/users")
         expect(result.status).toBe(401)
         expect(result.body.status).toBe('error')
     })
