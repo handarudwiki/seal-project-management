@@ -135,7 +135,7 @@ export const update = async (req) => {
         }
 
         if (req.user.avatar) {
-            const oldFilePath = `./public/images/${user.image}`;
+            const oldFilePath = `./public/images/${user.avatar}`;
             if (fs.existsSync(oldFilePath)) {
                 fs.unlinkSync(oldFilePath);
             }

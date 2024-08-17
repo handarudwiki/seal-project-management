@@ -4,7 +4,6 @@ export const registerUserValidation = z.object({
     'name': z.string().min(3).max(255),
     'email': z.string().email(),
     'password': z.string().min(6).max(255),
-    'avatar': z.string().url().optional()
 })
 
 export const loginUserValidation = z.object({
@@ -16,5 +15,4 @@ export const updateUserValidation = z.object({
     'name': z.string().min(3).max(255).optional(),
     'email': z.string().email().optional(),
     'password': z.string().min(6).max(255).optional(),
-    'avatar': z.string().url().optional(),
 })
