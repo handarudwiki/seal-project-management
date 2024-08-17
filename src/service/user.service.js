@@ -114,7 +114,7 @@ export const update = async (req) => {
         });
 
         if (emailExist) {
-            throw new ResponseError(409, "Email already exist");
+            throw new ResponseError( "Email already exist", 409);
         }
     }
 
